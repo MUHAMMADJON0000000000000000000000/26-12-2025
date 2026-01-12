@@ -1,0 +1,194 @@
+# 📌 JavaScript — Object Prototype (Konspekt)
+
+## 1️⃣ Prototype nima?
+
+**Prototype** — bu JavaScript’dagi **obyektlar meros oladigan yashirin obyekt**.
+
+👉 Agar obyekt ichida xususiyat (property) yoki metod topilmasa,
+JavaScript uni **prototype zanjiri bo‘ylab** qidiradi.
+
+---
+
+## 2️⃣ JavaScript’da hamma narsa obyekt
+
+```js
+let arr = [];
+let str = "salom";
+let num = 5;
+```
+
+Bularning hammasida prototype bor:
+
+```js
+arr.__proto__ === Array.prototype; // true
+str.__proto__ === String.prototype; // true
+```
+
+---
+
+## 3️⃣ `__proto__` nima?
+
+`__proto__` — bu **obyektning prototype’ga bo‘lgan havolasi**.
+
+```js
+const obj = {};
+console.log(obj.__proto__ === Object.prototype); // true
+```
+
+📌 Tavsiya: real loyihada `__proto__` ishlatma ❌
+o‘rniga **`Object.getPrototypeOf()`** ishlatiladi.
+
+---
+
+## 4️⃣ `Object.prototype`
+
+Bu **eng yuqori prototype** (root).
+
+```js
+Object.prototype;
+```
+
+Hamma obyektlar shundan metod oladi:
+
+```js
+obj.toString();
+obj.hasOwnProperty("key");
+```
+
+---
+
+## 5️⃣ Prototype Chain (Meros zanjiri)
+
+Misol:
+
+```js
+const arr = [];
+```
+
+Zanjir:
+
+```
+arr
+ ↓
+Array.prototype
+ ↓
+Object.prototype
+ ↓
+null
+```
+
+👉 Qidirish shu tartibda bo‘ladi.
+
+---
+
+## 6️⃣ Constructor va Prototype
+
+```js
+function Person(name) {
+  this.name = name;
+}
+
+Person.prototype.sayHello = function () {
+  return "Salom, " + this.name;
+};
+
+const p1 = new Person("Ali");
+
+console.log(p1.sayHello()); // Salom, Ali
+```
+
+📌 `sayHello` har bir obyekt uchun **alohida yaratilmaydi**,
+hammasi **bitta prototype’dan foydalanadi** ✅
+
+---
+
+## 7️⃣ Nima uchun prototype kerak?
+
+❌ Noto‘g‘ri:
+
+```js
+function User(name) {
+  this.name = name;
+  this.say = function () {};
+}
+```
+
+✅ To‘g‘ri:
+
+```js
+User.prototype.say = function () {};
+```
+
+👉 Xotira tejaladi
+👉 Kod toza bo‘ladi
+
+---
+
+## 8️⃣ `hasOwnProperty()`
+
+```js
+const obj = { a: 1 };
+
+obj.hasOwnProperty("a"); // true
+obj.hasOwnProperty("toString"); // false
+```
+
+📌 `toString` prototype’dan kelgan.
+
+---
+
+## 9️⃣ Prototype’ga metod qo‘shish (EHTIYOT ⚠️)
+
+```js
+Array.prototype.myMethod = function () {
+  return "Hello";
+};
+```
+
+❗ Yaxshi emas (production’da)
+❗ Boshqa kodlarni buzishi mumkin
+
+---
+
+## 🔟 `class` va Prototype
+
+```js
+class Animal {
+  speak() {
+    return "Ovoz chiqardi";
+  }
+}
+
+const dog = new Animal();
+
+dog.speak();
+```
+
+📌 `class` — bu faqat **prototype ustidagi sintaksis shakar**.
+
+---
+
+## 1️⃣1️⃣ Prototype tekshirish usullari
+
+```js
+Object.getPrototypeOf(obj);
+obj instanceof Object;
+```
+
+---
+
+## 1️⃣2️⃣ Qisqa taqqoslash
+
+| Tushuncha       | Ma’nosi                        |
+| --------------- | ------------------------------ |
+| `__proto__`     | Obyektning prototype’ga linki  |
+| `prototype`     | Constructor’ga tegishli obyekt |
+| Prototype chain | Meros zanjiri                  |
+| `class`         | Prototype ustidagi shakar      |
+
+---
+
+> **Prototype nima?**
+> Prototype — bu obyektlar meros oladigan yashirin obyekt bo‘lib, agar obyekt ichida metod topilmasa, JavaScript uni prototype chain orqali qidiradi.
+
+---
